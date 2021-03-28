@@ -47,7 +47,10 @@ class ProductService(val produtRepository:ProductRepository) {
     /**
      * Method responsible to list all products
      */
-    fun getAll(): List<Product> {
-        return this.produtRepository.findAll().toList()
-    }
+    fun getAll(): List<Product> = this.produtRepository.findAll().toList()
+
+    /**
+     * Method Responsible to capture count for products
+     */
+    fun count(): Long = this.produtRepository.count()
 }

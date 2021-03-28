@@ -72,6 +72,11 @@ class ProductsController {
         return ResponseEntity(listProduct,status)
     }
 
-
+    /**
+     * Method responsible to return number os products
+     */
+    @GetMapping("/count")
+    fun count(): ResponseEntity<Map<String,Long>> =
+            ResponseEntity.ok().body(mapOf("count" to this.service.count()))
 
 }
