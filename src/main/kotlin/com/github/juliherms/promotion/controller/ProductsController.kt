@@ -1,5 +1,6 @@
 package com.github.juliherms.promotion.controller
 
+import com.github.juliherms.promotion.exception.ProductNotFoundException
 import com.github.juliherms.promotion.model.Product
 import com.github.juliherms.promotion.service.ProductService
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,9 +23,8 @@ class ProductsController {
      */
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): ResponseEntity<Product?> {
-        var product = service.getById(id)
-        var status = if(product == null) HttpStatus.NOT_FOUND else HttpStatus.OK
-        return ResponseEntity(product,status)
+        var product = service.getById(id) ?: throw ProductNotFoundException("produto ${id} não encontrado")
+        return ResponseEntity(product,HttpStatus.OK)
     }
 
     /**

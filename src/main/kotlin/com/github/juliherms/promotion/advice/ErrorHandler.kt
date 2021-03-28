@@ -1,6 +1,7 @@
 package com.github.juliherms.promotion.advice
 
 import com.fasterxml.jackson.core.JsonParseException
+import com.github.juliherms.promotion.exception.ProductNotFoundException
 import com.github.juliherms.promotion.model.ErrorMessage
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,5 +22,10 @@ class ErrorHandler {
     @ExceptionHandler(JsonParseException::class)
     fun jsonParseExceptionHandler(servletRequest: HttpServletRequest, servletResponse: HttpServletResponse, exception: Exception): ResponseEntity<ErrorMessage> {
         return ResponseEntity(ErrorMessage("JSON ERROR",exception.message ?: "invalid json"), HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(ProductNotFoundException::class)
+    fun productNotFoundExceptionHandler(servletRequest: HttpServletRequest, servletResponse: HttpServletResponse, exception: Exception): ResponseEntity<ErrorMessage> {
+        return ResponseEntity(ErrorMessage("Produto não encontrado", exception.message !!), HttpStatus.NOT_FOUND)
     }
 }
