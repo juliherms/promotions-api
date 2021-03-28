@@ -2,9 +2,7 @@ package com.github.juliherms.promotion.service
 
 import com.github.juliherms.promotion.model.Product
 import com.github.juliherms.promotion.repository.ProductRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * This class responsible to implement business logic to access product repository
@@ -38,7 +36,7 @@ class ProductService(val produtRepository:ProductRepository) {
      * Method responsible to remove product
      */
     fun remove (id: Long) {
-        this.produtRepository.delete(Product(id = id))
+        this.produtRepository.deleteById(id)
     }
 
     /**
@@ -50,6 +48,6 @@ class ProductService(val produtRepository:ProductRepository) {
      * Method responsible to list all products
      */
     fun getAll(): List<Product> {
-        return this.produtRepository.findAll()
+        return this.produtRepository.findAll().toList()
     }
 }
