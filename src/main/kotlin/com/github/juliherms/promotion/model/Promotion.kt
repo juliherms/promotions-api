@@ -10,8 +10,8 @@ data class Promotion(
         val id: Long,
         val name: String,
         val amount: Float? = 0.0f,
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
         val initialDate: Date,
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
         val expiredDate: Date
 )
