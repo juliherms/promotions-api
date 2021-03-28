@@ -63,13 +63,15 @@ class ProductsController {
     }
 
     /**
-     * Find products by description
+     * List all paginated products
      */
     @GetMapping("")
-    fun getAll(@RequestParam(required = false, defaultValue = "") description: String): ResponseEntity<List<Product>> {
-        val listProduct = this.service.getAll()
-        val status = if(listProduct.isEmpty()) HttpStatus.NOT_FOUND else HttpStatus.OK
-        return ResponseEntity(listProduct,status)
+    fun getAll(@RequestParam(required = false, defaultValue = "0") start: Int,
+               @RequestParam(required = false, defaultValue = "3") size: Int ): ResponseEntity<List<Product>> {
+
+        val list = this.service.getAll(start,size)
+        val status = if(list.isEmpty()) HttpStatus.NOT_FOUND else HttpStatus.OK
+        return ResponseEntity(list,status)
     }
 
     /**
