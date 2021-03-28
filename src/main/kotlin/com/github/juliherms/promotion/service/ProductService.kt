@@ -1,57 +1,55 @@
 package com.github.juliherms.promotion.service
 
 import com.github.juliherms.promotion.model.Product
+import com.github.juliherms.promotion.repository.ProductRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * This class responsible to implement business logic to access product repository
+ * in this case I'm prefer use dependency injection with constructor
+ */
 @Component
-class ProductService {
-
-    companion object {
-        val initialProducts = arrayOf(
-                Product(1, "Ração Royal Canin Club Performance Cães Adultos"),
-                Product(2, "Ração Premier Raças Específicas Golden Retriever para Cães Adultos"),
-                Product(3,"Antipulgas e Carrapatos Bravecto MSD para Cães até 4,5 kg")
-            )
-        }
-
-    var products =  ConcurrentHashMap<Long,Product>(initialProducts.associateBy( Product::id ))
+class ProductService(val produtRepository:ProductRepository) {
 
     /**
      * Method responsible to create product
      */
     fun create(product: Product) {
-        products[product.id] = product
+        this.produtRepository.save(product)
     }
 
     /**
      * Method responsible to get product by id
      */
     fun getById(id: Long): Product? {
-        return products[id]
+        return this.produtRepository.findById(id).orElseGet(null)
     }
 
     /**
      * Method responsible to update product
      */
     fun update(id: Long, product:Product){
-        products.remove(id)
-        products[id] = product
+        create(product)
     }
 
     /**
      * Method responsible to remove product
      */
     fun remove (id: Long) {
-        products.remove(id)
+        this.produtRepository.delete(Product(id = id))
     }
 
     /**
      * Method responsible to filter product
      */
-    fun filter (description: String)  =
-            products.filter {
-                it.value.description.contains(description,true)
-            }.map (Map.Entry<Long,Product>::value).toList()
+    fun filter (description: String)  = null
 
+    /**
+     * Method responsible to list all products
+     */
+    fun getAll(): List<Product> {
+        return this.produtRepository.findAll()
+    }
 }

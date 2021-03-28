@@ -66,15 +66,12 @@ class ProductsController {
      * Find products by description
      */
     @GetMapping("")
-    fun listAll(@RequestParam(required = false, defaultValue = "") description: String): ResponseEntity<List<Product>> {
-        var status = HttpStatus.OK
-        val listProducts = service.filter(description)
-
-        if(listProducts.isEmpty()){
-            status = HttpStatus.NOT_FOUND
-        }
-
-        return ResponseEntity(listProducts,status)
+    fun getAll(@RequestParam(required = false, defaultValue = "") description: String): ResponseEntity<List<Product>> {
+        val listProduct = this.service.getAll()
+        val status = if(listProduct.isEmpty()) HttpStatus.NOT_FOUND else HttpStatus.OK
+        return ResponseEntity(listProduct,status)
     }
+
+
 
 }
