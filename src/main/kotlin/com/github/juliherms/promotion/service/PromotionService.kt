@@ -2,6 +2,10 @@ package com.github.juliherms.promotion.service
 
 import com.github.juliherms.promotion.model.Product
 import com.github.juliherms.promotion.model.Promotion
+import com.github.juliherms.promotion.repository.ProductRepository
+import com.github.juliherms.promotion.repository.PromotionRepository
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -10,51 +14,51 @@ import java.util.concurrent.ConcurrentHashMap
  * This class responsible to provide business logic to entity promotion
  */
 @Component
-class PromotionService {
-
-    companion object {
-        val initialPromotions = arrayOf(
-                Promotion(1L,"Produtos com 20% de desconto",20F, Date(),Date()),
-        )
-    }
-
-    var promotions =  ConcurrentHashMap<Long, Promotion>(initialPromotions.associateBy( Promotion::id ))
+class PromotionService (val promotionRepository: PromotionRepository) {
 
     /**
-     * Create promotion
+     * Method responsible to create promotion
      */
     fun create(promotion: Promotion) {
-        promotions[promotion.id] = promotion
+        this.promotionRepository.save(promotion)
     }
 
     /**
-     * Find promotion by id
+     * Method responsible to get promotion by id
      */
     fun getById(id: Long): Promotion? {
-        return promotions[id]
+        return this.promotionRepository.findById(id).orElseGet(null)
     }
 
     /**
-     * update promotion
+     * Method responsible to update promotion
      */
-    fun update(id: Long, promotion:Promotion){
-        promotions.remove(id)
-        promotions[id] = promotion
+    fun update(id: Long, promotion: Promotion){
+        create(promotion)
     }
 
     /**
-     * Remove promotion
+     * Method responsible to remove promotion
      */
     fun remove (id: Long) {
-        promotions.remove(id)
+        this.promotionRepository.deleteById(id)
     }
 
     /**
-     * Filter promotion by name
+     * Method responsible to filter promotion
      */
-    fun filter (name: String)  =
-            promotions.filter {
-                it.value.name.contains(name,true)
-            }.map (Map.Entry<Long,Promotion>::value).toList()
+    fun filter (description: String)  = null
 
+    /**
+     * Method responsible to list all promotions
+     */
+    fun getAll(start: Int, size: Int): List<Promotion> {
+        val pages: Pageable = PageRequest.of(start,size)
+        return this.promotionRepository.findAll(pages).toList()
+    }
+
+    /**
+     * Method Responsible to capture count for promotions
+     */
+    fun count(): Long = this.promotionRepository.count()
 }

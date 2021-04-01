@@ -1,5 +1,6 @@
 package com.github.juliherms.promotion.controller
 
+import com.github.juliherms.promotion.exception.PromotionNotFoundException
 import com.github.juliherms.promotion.model.Promotion
 import com.github.juliherms.promotion.service.PromotionService
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,9 +23,8 @@ class PromotionsController {
      */
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): ResponseEntity<Promotion?> {
-        var promotion = service.getById(id)
-        var status = if(promotion == null) HttpStatus.NOT_FOUND else HttpStatus.OK
-        return ResponseEntity(promotion,status)
+        var promotion = service.getById(id) ?: throw PromotionNotFoundException("promoção de ${id} não encontrada")
+        return ResponseEntity(promotion,HttpStatus.OK)
     }
 
     /**
@@ -33,7 +33,7 @@ class PromotionsController {
     @PostMapping()
     fun create (@RequestBody promotion: Promotion): ResponseEntity<Unit> {
         service.create(promotion)
-        return ResponseEntity(Unit, HttpStatus.CREATED)
+        return ResponseEntity(Unit,HttpStatus.CREATED)
     }
 
     /**
@@ -59,21 +59,27 @@ class PromotionsController {
             service.update(id,promotion)
             status = HttpStatus.ACCEPTED
         }
+
         return ResponseEntity(Unit,status)
     }
 
     /**
-     * Find promotions by name
+     * List all paginated promotions
      */
     @GetMapping("")
-    fun listAll(@RequestParam(required = false, defaultValue = "") description: String): ResponseEntity<List<Promotion>> {
-        var status = HttpStatus.OK
-        val listPromotions = service.filter(description)
+    fun getAll(@RequestParam(required = false, defaultValue = "0") start: Int,
+               @RequestParam(required = false, defaultValue = "3") size: Int ): ResponseEntity<List<Promotion>> {
 
-        if(listPromotions.isEmpty()){
-            status = HttpStatus.NOT_FOUND
-        }
-
-        return ResponseEntity(listPromotions,status)
+        val list = this.service.getAll(start,size)
+        val status = if(list.isEmpty()) HttpStatus.NOT_FOUND else HttpStatus.OK
+        return ResponseEntity(list,status)
     }
+
+    /**
+     * Method responsible to return number os promotions
+     */
+    @GetMapping("/count")
+    fun count(): ResponseEntity<Map<String,Long>> =
+            ResponseEntity.ok().body(mapOf("count" to this.service.count()))
+
 }
