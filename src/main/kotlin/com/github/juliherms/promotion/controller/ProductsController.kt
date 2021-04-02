@@ -87,4 +87,7 @@ class ProductsController {
     @GetMapping("/sorted")
     fun sorted() = this.service.geyAllSortedByName()
 
+    @GetMapping("/like")
+    fun getByNameLike() = this.service.findByNameLike()
+
 }

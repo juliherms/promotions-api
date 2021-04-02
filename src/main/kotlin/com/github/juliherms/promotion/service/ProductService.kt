@@ -47,6 +47,8 @@ class ProductService(val produtRepository:ProductRepository) {
      */
     fun filter (description: String)  = null
 
+    fun findByNameLike(): List<Product> = this.produtRepository.findByNameLike("casa".toUpperCase())
+
     /**
      * Method responsible to list all products
      */
