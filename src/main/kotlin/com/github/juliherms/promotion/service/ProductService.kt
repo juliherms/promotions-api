@@ -4,6 +4,7 @@ import com.github.juliherms.promotion.model.Product
 import com.github.juliherms.promotion.repository.ProductRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 
 /**
@@ -50,7 +51,7 @@ class ProductService(val produtRepository:ProductRepository) {
      * Method responsible to list all products
      */
     fun getAll(start: Int, size: Int): List<Product> {
-        val pages: Pageable = PageRequest.of(start,size)
+        val pages: Pageable = PageRequest.of(start,size, Sort.by("name").ascending())
         return this.produtRepository.findAll(pages).toList()
     }
 
@@ -58,4 +59,9 @@ class ProductService(val produtRepository:ProductRepository) {
      * Method Responsible to capture count for products
      */
     fun count(): Long = this.produtRepository.count()
+
+    /**
+     * Method responsible to list all products sorted
+     */
+    fun geyAllSortedByName(): List<Product> = this.produtRepository.findAll(Sort.by("name").descending()).toList()
 }

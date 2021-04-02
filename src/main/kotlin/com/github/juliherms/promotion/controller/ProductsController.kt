@@ -81,4 +81,10 @@ class ProductsController {
     fun count(): ResponseEntity<Map<String,Long>> =
             ResponseEntity.ok().body(mapOf("count" to this.service.count()))
 
+    /**
+     * Method responsible to list all products with name sorted
+     */
+    @GetMapping("/sorted")
+    fun sorted() = this.service.geyAllSortedByName()
+
 }
