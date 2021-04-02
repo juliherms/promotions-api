@@ -20,6 +20,8 @@ $ cd promotion-api
 $ mvn clean package
 #Create basic docker imagem from solution.
 $ docker build -t juliherms/promotion-api:v1 .
+#Show the created image
+$ docker image ls
 #Execute docker compose
 $ docker-compose -f docker-compose-integrated.yml up
 ```
