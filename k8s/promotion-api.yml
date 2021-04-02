@@ -39,7 +39,7 @@ spec:
             memory: 100Mi
         env:
         - name: DATABASE_SERVER
-          value: localhost          
+          value: 34.122.78.117
         - name: DATABASE_USER
           value: root          
         - name: DATABASE_PASS

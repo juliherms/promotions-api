@@ -37,3 +37,18 @@ docker-compose up
 #execute whit maven
 $ mvn spring-boot:run
 ```
+
+# Running into CGP Cloud Platform
+
+MySQL Database instance
+
+<img src="img/image3.PNG">
+
+Container Registry
+
+<img src="img/image1.PNG">
+
+Google Cloud Kubernetes Platform
+
+<img src="img/image2.PNG">
+
