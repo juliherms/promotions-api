@@ -38,6 +38,11 @@ docker-compose up
 $ mvn spring-boot:run
 ```
 
+Swagger UI
+
+<img src="img/image4.PNG">
+
+
 ### Running into CGP Cloud Platform
 
 MySQL Database instance
