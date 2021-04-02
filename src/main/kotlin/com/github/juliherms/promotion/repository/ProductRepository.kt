@@ -12,6 +12,9 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ProductRepository : PagingAndSortingRepository<Product,Long> {
 
+    /**
+     * Method responsible to list all products with like name
+     */
     @Query(value = "select p from Product p WHERE UPPER(p.name) LIKE %:name%")
     fun findByNameLike(@Param("name") name : String) : List<Product>
 }
