@@ -38,7 +38,7 @@ docker-compose up
 $ mvn spring-boot:run
 ```
 
-# Running into CGP Cloud Platform
+### Running into CGP Cloud Platform
 
 MySQL Database instance
 
