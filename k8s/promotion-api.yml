@@ -29,7 +29,7 @@ spec:
         app: promotion-api
     spec:
       containers:
-      - name: tcb-zap-me
+      - name: promotion-api
         image: gcr.io/boreal-axiom-307901/promotion-api:latest
         ports:
         - containerPort: 8080
