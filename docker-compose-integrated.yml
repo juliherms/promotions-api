@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+
+  #Promotion API
+  promotion-api: 
+    container_name: promotion-api
+    image: promotion-api:v1
+    environment:
+      DATABASE_SERVER: mysql-database-int
+      DATABASE_USER: root
+      DATABASE_PASS: 12345
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql-database-int
+    networks:
+    - minha-rede
+
+  #MySQL Database 
+  mysql-database-int: 
+    container_name: mysql-promotion-int
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 12345
+      MYSQL_DATABASE: book
+      MYSQL_ROOT_PASSWORD: 12345
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+    networks:
+    - minha-rede
+  
+#Network
+networks: 
+  minha-rede:
+    driver: bridge
+ 
