@@ -2,6 +2,12 @@
 
 This API was built during a study of best practices using kotlin and spring boot 
 
+### Requirements
+
+- Java 8 or plus
+- Maven
+- Docker
+
 ### Running application
 
 - With docker imagem 
