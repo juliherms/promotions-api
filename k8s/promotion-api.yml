@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: promotion-api
+spec:
+  ports:
+  - port: 8080
+  selector:
+    app: promotion-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promotion-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: promotion-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: promotion-api
+    spec:
+      containers:
+      - name: tcb-zap-me
+        image: gcr.io/boreal-axiom-307901/promotion-api:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: DATABASE_SERVER
+          value: localhost          
+        - name: DATABASE_USER
+          value: root          
+        - name: DATABASE_PASS
+          value: 12345          
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: promotion-api
+spec:
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  selector:
+    app: promotion-api
+
